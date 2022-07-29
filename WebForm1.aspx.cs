@@ -5,94 +5,35 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Assignment_4_Task2
+namespace Assignment_4_Task1
 {
-
+    public class Student //this is student class here I am using get and set to get the values and set them according to their  variables
+    {
+        public int RollNo { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+    }
     public partial class WebForm1 : System.Web.UI.Page
     {
-        StaffList staffMemer = new StaffList();
+        protected static List<Student> studentList;
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if the page is not post back then the data will be saved in a session 
-            if (!IsPostBack)
-            {
-                Session["StoreList"] = staffMemer.SetStaffList();
-                //data binding by session
-                StaffTable.DataSource = Session["StoreList"];
-                StaffTable.DataBind();
-            }
-
+            //here i am hardcoding the student data for roll no, name and address accordingly
+            var s1 = new Student() { RollNo = 0086, Name = "Sameer Murtaza", Address = "House No. 21, Light House Centre, Karachi" };
+            var s2 = new Student() { RollNo = 0284, Name = "Zaryab Ali Rana", Address = "A-1/225, Wapda Town" };
+            var s3 = new Student() { RollNo = 0275, Name = "Rao Usama Abid", Address = "35-Umer Electric Market, Lahore" };
+            var s4 = new Student() { RollNo = 0281, Name = "Shahroz Shahzad", Address = "206-c, Iqbal Garden, Shobraj Chitumal Road" };
+            var s5 = new Student() { RollNo = 0289, Name = "Hadeed Razzaq", Address = "Main Bilal Chowrangi, Sector No. 18, Karachi" };
+            var s6 = new Student() { RollNo = 0204, Name = "Fahad Shakeel", Address = "Hakim & Hashmi Shopping Centre, Preedy Street, Karachi" };
+            var s7 = new Student() { RollNo = 0238, Name = "Syed Ibtesam Hassan", Address = "5-K, Model Town, Lahore" };
+            var s8 = new Student() { RollNo = 0288, Name = "Murtaza Ali", Address = "Hakim & Hashmi Shopping Centre, Preedy Street, Karachi" };
+            var s9 = new Student() { RollNo = 0238, Name = "Syed Osajah Zaidi", Address = "5-K, faizbagh, Lahore" };
+            var s10 = new Student() { RollNo = 0288, Name = "Syed Farhan Zaidi", Address = "Hussain chownk, kashmir lake , Gilgit" };
+            //creating list to add the students in the list by making objects
+            studentList = new List<Student>() { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 };
+            //i am doing data binding with just two lines 
+            StudentTable.DataSource = studentList;
+            StudentTable.DataBind();
         }
-
-
-     
-
-        protected void StaffTableRowUpdating(object sender, GridViewUpdateEventArgs e)
-        {
-            //this function is called when update button is pressed
-            //this function will input new data and replace it with the old one
-            GridViewRow row = StaffTable.Rows[e.RowIndex];
-            int vare = e.RowIndex;
-            Label t1 = (Label)row.FindControl("Label1");
-            TextBox t2 = (TextBox)row.FindControl("TextBox1");
-            TextBox t3 = (TextBox)row.FindControl("TextBox3");
-            TextBox t4 = (TextBox)row.FindControl("TextBox4");
-            TextBox t5 = (TextBox)row.FindControl("TextBox5");
-            int CatchedID = Convert.ToInt32(t1.Text);
-            List<StaffList> tempList = Session["StoreList"] as List<StaffList>;
-            foreach (StaffList item in tempList)
-            {
-                if (item.staffId == CatchedID)
-                {
-                    item.Name = t2.Text;
-                    item.Role = t3.Text;
-                    item.address = t4.Text;
-                    item.salary = Convert.ToInt32(t5.Text);
-                    break;
-                }
-            }
-            //the new data will be bind here 
-            StaffTable.EditIndex = -1;
-            StaffTable.DataSource = Session["StoreList"];
-            StaffTable.DataBind();
-        }
-        protected void StaffTablePageIndexChanging(object sender, GridViewPageEventArgs e)
-        {
-            //this is a function for the pagination control
-            StaffTable.PageIndex = e.NewPageIndex;
-            StaffTable.DataSource = Session["StoreList"];
-            StaffTable.DataBind();
-        }
-
-        protected void StaffTableRowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
-        {
-            //This function will end the editing
-            StaffTable.EditIndex = -1;
-            StaffTable.DataSource = Session["StoreList"];
-            StaffTable.DataBind();
-        }
-
-        protected void StaffTableRowDeleting(object sender, GridViewDeleteEventArgs e)
-        {
-            //this function will simply find the row and delete it in the list
-            int rowIndex = e.RowIndex;
-            List<StaffList> tempList = Session["StoreList"] as List<StaffList>;
-            if (rowIndex >= 0)
-            {
-                tempList.RemoveAt(rowIndex);
-            }
-            StaffTable.DataSource = Session["StoreList"];
-            StaffTable.DataBind();
-
-        }
-        protected void StaffTableRowEditing(object sender, GridViewEditEventArgs e)
-        {
-            //this function will be used to edit the row data and bind it
-            StaffTable.EditIndex = e.NewEditIndex;
-            StaffTable.DataSource = Session["StoreList"];
-            StaffTable.DataBind();
-        }
-
-        
     }
 }
